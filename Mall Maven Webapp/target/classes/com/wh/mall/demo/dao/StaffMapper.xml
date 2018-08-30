@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StaffMapper">
+
+
+	<select id="findById" resultType="pd" parameterType="pd">
+		select
+		a.id,
+		a.name,
+		a.sex,
+		a.position,
+		a.education,
+		a.specialty,
+		a.phone,
+		a.occupation_rank,
+		a.role_id as section, 
+		b.id as section_id, 
+		b.name as section_name,  
+		a.address,
+		a.pass_word
+		from employee a left join role b on a.role_id = b.id
+		where a.id = #{id}
+
+	</select>
+
+
+	<!-- 列表 -->
+	<select id="querylistPage" parameterType="page" resultType="pd"
+		useCache="false">
+		select
+		a.id,
+		a.name,
+		a.sex,
+		a.position,
+		a.education,
+		a.specialty,
+		a.phone,
+		a.occupation_rank,
+		a.role_id as section, 
+		a.address
+		from employee a
+		where a.is_del=0
+		<if test="pd.name!=null and pd.name!=''">
+			and a.name like concat ('%',#{pd.name},'%')
+		</if>
+		<if test="pd.section!=null and pd.section!=''">
+			and a.role_id = #{pd.section}
+		</if>
+		order by a.id desc
+	</select>
+
+	<!-- 修改 -->
+	<update id="updateEntity" parameterType="pd">
+		update employee
+		<set>
+			<if test="name!=null and name!=''">name=#{name},</if>
+			<if test="sex!=null and sex!=''">sex=#{sex},</if>
+			<if test="position!=null and position!=''">position=#{position},</if>
+			<if test="education!=null and education!=''">education=#{education},</if>
+			<if test="specialty!=null and specialty!=''">specialty=#{specialty},</if>
+			<if test="phone!=null and phone!=''">phone=#{phone},</if>
+			<if test="occupation_rank!=null and occupation_rank!=''">occupation_rank=#{occupation_rank},</if>
+			<if test="section!=null and section!=''">role_id=#{section},</if>
+			<if test="pass_word!=null and pass_word!=''">pass_word=#{pass_word},</if> 
+			<if test="address !=null and address !=''">address=#{address},</if>
+			<if test="is_del!=null and is_del!=''"> 
+				is_del=#{is_del}, 
+				states=9
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 新增 -->
+	<insert id="saveEntity" parameterType="pd">
+		insert into employee
+		(
+		<if test="name!=null and name!=''">name,</if>
+		<if test="sex!=null and sex!=''">sex,</if>
+		<if test="position!=null and position!=''">position,</if>
+		<if test="education!=null and education!=''">education,</if>
+		<if test="specialty!=null and specialty!=''">specialty,</if>
+		<if test="phone!=null and phone!=''">phone,</if>
+		<if test="occupation_rank!=null and occupation_rank!=''">occupation_rank,</if>
+		<if test="section!=null and section!=''">role_id,</if> 
+		<if test="pass_word!=null and pass_word!=''">pass_word,</if>   
+		<if test="address !=null and address !=''">address,</if>
+		create_time,
+		states,
+		is_del
+		)
+		values
+		(
+		<if test="name!=null and name!=''">#{name},</if>
+		<if test="sex!=null and sex!=''">#{sex},</if>
+		<if test="position!=null and position!=''">#{position},</if>
+		<if test="education!=null and education!=''">#{education},</if>
+		<if test="specialty!=null and specialty!=''">#{specialty},</if>
+		<if test="phone!=null and phone!=''">#{phone},</if>
+		<if test="occupation_rank!=null and occupation_rank!=''">#{occupation_rank},</if>
+		<if test="section!=null and section!=''">#{section},</if>  
+		<if test="pass_word!=null and pass_word!=''">#{pass_word},</if>   
+		<if test="address !=null and address !=''">#{address},</if>
+		NOW(),
+		1,
+		0
+		)
+	</insert>
+
+	<insert id="insertdepartments" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into role( 
+		company_id,
+		name, 
+		is_del
+		)values ( 
+		#{company_id},
+		#{name}, 
+		0
+		)
+	</insert>
+	<update id="updatedepartments">
+		update role
+		<set>
+			id=id,
+			<if test="name !=null and name !=''">
+				name=#{name},
+			</if> 
+			<if test="is_del !=null and is_del !=''">
+				is_del=#{is_del}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="querydepartmentsbyId" resultType="pd">
+		select
+		id,
+		name
+		from role where id = #{id}
+	</select>
+	<select id="querydepartmentsList" resultType="pd">
+		select
+		id,
+		name
+		from role  
+		where is_del=0 
+		order by id 
+	</select> 
+	 
+	<select id="queryDefaultCompany" resultType="pd"> 
+		 select id from company order by id limit 0,1
+	</select> 
+	 
+	<select id="queryHasPhone" resultType="java.lang.Integer"> 
+	 	 select count(0) from employee where phone = #{phone} 
+	 	 <if test="id!=null and id!='' and id!='undefined'"> 
+	 	 	and id <![CDATA[!= ]]>  #{id} 
+	 	 </if>
+	</select>  
+	  
+	<delete id="deleteDepartmentsById"> 
+	 	delete from role where id = #{id}
+	</delete>
+</mapper>
