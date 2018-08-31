@@ -4,6 +4,8 @@ package com.wh.mall.utils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,8 +17,9 @@ import com.wh.mall.basic.bean.UserInfo;
 
 public class BaseController {
 	
-	protected Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String SESSIONKEY_PRINCIPAL = "principal";
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 6357869213649815390L;
 	
 	/**

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wh.mall.basic.bean.PropertiesConfig;
+import com.wh.mall.demo.service.DemoService;
 
 
 
@@ -18,6 +19,6 @@ public class TestController {
 	@GetMapping("/test")
 	public String test() { 
 		return "Hello World";
-	} 
-	
+	}  
+	 
 }

@@ -31,7 +31,8 @@ public class DemoService {
 	*/
 	public void saveU(PageData pd)throws Exception{
 		dao.save("StaffMapper.saveEntity", pd);
-	}
+	} 
+	
 	/*
 	* 修改
 	*/

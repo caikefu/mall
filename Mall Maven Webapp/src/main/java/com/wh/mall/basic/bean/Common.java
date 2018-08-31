@@ -1,6 +1,8 @@
 package com.wh.mall.basic.bean;
 
-public class Common { 
+public class Common {  
+	//druid 监控: http://localhost:point/druid/index.html  
+	//swagger2: http://localhost:point/swagger-ui.html#/
 	/**
 	 * 成功
 	 */
