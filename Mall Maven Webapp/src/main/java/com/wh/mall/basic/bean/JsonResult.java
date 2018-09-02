@@ -1,14 +1,12 @@
 package com.wh.mall.basic.bean;
 
-import java.util.List;
 
 public class JsonResult { 
 	/**
 	 * 状态反回 0:成功1：异常
 	 */
-	private int result; 
-	private List<Object> list; 
-	private Object entity;  
+	private int status; 
+	private Object result;  
 	/**
 	 * 失败原因
 	 */
@@ -20,24 +18,19 @@ public class JsonResult {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-	public List<Object> getList() {
-		return list;
+	public int getStatus() {
+		return status;
 	}
-	public void setList(List<Object> list) {
-		this.list = list;
+	public void setStatus(int status) {
+		this.status = status;
 	}
-	public Object getEntity() {
-		return entity;
-	}
-	public void setEntity(Object entity) {
-		this.entity = entity;
-	}
-	public int getResult() {
+	public Object getResult() {
 		return result;
 	}
-	public void setResult(int result) {
+	public void setResult(Object result) {
 		this.result = result;
 	}
+	
 	
 	
 }

@@ -3,6 +3,10 @@ package com.wh.mall.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wh.mall.basic.bean.Common;
+import com.wh.mall.basic.bean.Page;
+import com.wh.mall.basic.bean.PageData;
+
 public class Util {
 	 /**
 	  * 验证手机号码
@@ -47,5 +51,11 @@ public class Util {
 	 public static boolean isInteger(String str) {
 			Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
 			return pattern.matcher(str).matches();
+	} 
+	  
+	public static Page setPage(Page page,PageData pd) {  
+		page.setCurrentPage(null==pd.get("index")?Common.index:(Integer) pd.get("index")); 
+		page.setShowCount(null==pd.get("size")?Common.DEFAULT_SIZE:(Integer) pd.get("size"));
+		return page;
 	}
 }

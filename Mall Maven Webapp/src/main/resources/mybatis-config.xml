@@ -15,11 +15,11 @@
 		<typeAlias type="com.wh.mall.basic.bean.Page" alias="Page"/>
 	</typeAliases>
 	
-<!-- 	<plugins>
+	<plugins>
 		<plugin interceptor="com.wh.mall.basic.bean.PagePlugin">
 			<property name="dialect" value="mysql"/>
 			<property name="pageSqlId" value=".*listPage.*"/>
 		</plugin>
-	</plugins> -->
+	</plugins> 
 	
 </configuration>

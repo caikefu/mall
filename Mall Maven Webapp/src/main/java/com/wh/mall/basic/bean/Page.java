@@ -23,7 +23,7 @@ public class Page {
 	
 	public Page(){
 		try {
-			this.showCount = Integer.parseInt(Tools.readTxtFile(Const.PAGE));
+			this.showCount = Common.DEFAULT_SIZE;
 		} catch (Exception e) {
 			this.showCount = 15;
 		}

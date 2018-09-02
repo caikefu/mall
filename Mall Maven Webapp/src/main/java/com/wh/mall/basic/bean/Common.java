@@ -10,5 +10,16 @@ public class Common {
 	/**
 	 * 失败
 	 */
-	public static final int FAILED=1;
+	public static final int FAILED=1; 
+	  
+	/**
+	 * 默认分页
+	 */
+	public static final int DEFAULT_SIZE=10; 
+	   
+	/**
+	 * 默认下标
+	 */
+	public static final int index=0; 
+	 
 }

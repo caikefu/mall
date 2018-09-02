@@ -1,8 +1,10 @@
 package com.wh.mall.demo.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wh.mall.basic.bean.Common;
 import com.wh.mall.basic.bean.JsonResult;
+import com.wh.mall.basic.bean.Page;
 import com.wh.mall.basic.bean.PageData;
 import com.wh.mall.demo.service.DemoService;
 import com.wh.mall.utils.BaseController;
 import com.wh.mall.utils.Const;
+import com.wh.mall.utils.Util;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,7 +36,43 @@ import io.swagger.annotations.ApiResponses;
 public class RestfulController extends BaseController{ 
 	 
 	@Autowired 
-	private DemoService demoService; 
+	private DemoService demoService;  
+	  
+	/**
+	 * 分页条件查询用户
+	 * @param id
+	 * @return
+	 */
+	@ApiOperation(value="获取用户列表", notes="根据查询条件来获取用户列表")
+	@ApiImplicitParams( 
+			{  
+				//@ApiImplicitParam(name = "data", value = "参数集合{\"index\":1,\"size\":10,\"section\":1, \n asd=1,asda=1,asda=2}", required = true, dataType = "json", paramType = "列表查询"), 
+				@ApiImplicitParam(name = "index", value = "页数", required = true, dataType = "int", paramType = "path"), 
+				@ApiImplicitParam(name = "size", value = "数据量", required = true, dataType = "int", paramType = "path"), 
+				@ApiImplicitParam(name = "section", value = "部门", required = false, dataType = "string", paramType = "path")
+			} 
+	)
+	@ApiResponses({ @ApiResponse(code = Common.SUCCESS, message = "操作成功"),
+        @ApiResponse(code = Common.FAILED, message = "服务器内部异常")})
+	@GetMapping("user")
+	public ResponseEntity<JsonResult> getUserList (){ 
+		JsonResult r = new JsonResult();
+		try {  
+			Page page = new Page();   
+			PageData pd = new PageData(); 
+			pd = this.getPageData();
+			Util.setPage(page, pd);
+			page.setPd(pd); 
+			List<PageData> list = demoService.listPdPageUser(page);  
+			r.setStatus(Common.SUCCESS);
+			r.setResult(list);
+		} catch (Exception e) {
+			r.setResult(Common.FAILED);
+			r.setReason(e.getClass().getName()+":"+e.getMessage());
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok(r);
+	}  
 
 	/**
 	 * 根据ID查询用户
@@ -40,16 +80,17 @@ public class RestfulController extends BaseController{
 	 * @return
 	 */
 	@ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")
-	@ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Integer", paramType = "path") 
+	@ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Int", paramType = "path") 
 	@GetMapping("user/{id}")
 	public ResponseEntity<JsonResult> getUserById (@PathVariable(value = "id") Integer id){ 
 		JsonResult r = new JsonResult();
 		try { 
-			PageData user = new PageData(); 
+			PageData user = new PageData();  
+			user = this.getPageData();
 			user.put("id", "1"); 
 			user.put("name", "王小三");
-			r.setEntity(user);
-			r.setResult(Common.SUCCESS);
+			r.setResult(user);
+			r.setStatus(Common.SUCCESS);
 		} catch (Exception e) {
 			r.setResult(Common.FAILED);
 			r.setReason(e.getClass().getName()+":"+e.getMessage());
@@ -79,8 +120,8 @@ public class RestfulController extends BaseController{
 			logger.info("修改客户信息"); 
 			PageData user = new PageData(); 
 			user = demoService.findByUiId(data);
-			r.setEntity(user);
-			r.setResult(Common.SUCCESS);
+			r.setResult(user);
+			r.setStatus(Common.SUCCESS);
 		} catch (Exception e) {
 			r.setResult(Common.FAILED);
 			r.setReason(e.getClass().getName()+":"+e.getMessage());

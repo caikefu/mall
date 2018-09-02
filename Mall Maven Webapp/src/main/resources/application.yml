@@ -9,9 +9,9 @@ spring:
  #   suffix: .jsp 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.235:3306/spw?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/spw?useUnicode=true&characterEncoding=utf-8
     username: root
-    password: 123456  
+    password: root  
     ###################以下为druid增加的配置###########################
     type: com.alibaba.druid.pool.DruidDataSource
     # 下面为连接池的补充设置，应用到上面所有数据源中
@@ -41,5 +41,14 @@ spring:
     ###############以上为配置druid添加的配置########################################
 mybatis :
   mapper-locations: classpath:com/wh/mall/**/dao/mapper/*Mapper.xml
-  config-location:  classpath:mybatis-config.xml
+  config-location:  classpath:mybatis-config.xml 
+   
+logging: 
+  home: /home/user/logs/
+  name: "sell"
+  level:
+    root: "DEBUG"
+    org.springframework: "DEBUG"
+    com.gong: "debug"
+  config: classpath:logback-dev.xml
  
